@@ -2,11 +2,20 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import { createClient } from '@/lib/supabase/server'
 import { LeaderboardClient } from '@/components/leaderboard/leaderboard-client'
+import { MonthSelector } from '@/components/month-selector'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default async function Home() {
+interface PageProps {
+  searchParams: Promise<{
+    month?: string
+    year?: string
+  }>
+}
+
+export default async function Home({ searchParams }: PageProps) {
   const supabase = await createClient()
+  const params = await searchParams
 
   // Check if user is logged in and is admin
   const { data: { user } } = await supabase.auth.getUser()
@@ -26,17 +35,47 @@ export default async function Home() {
   const now = new Date()
   const currentMonth = now.getMonth() + 1
   const currentYear = now.getFullYear()
-  const monthName = format(now, 'MMMM yyyy')
 
-  // Fetch leaderboard data for current month
+  // Use selected month/year from URL or default to current
+  const selectedMonth = params.month ? parseInt(params.month) : currentMonth
+  const selectedYear = params.year ? parseInt(params.year) : currentYear
+  const monthName = format(new Date(selectedYear, selectedMonth - 1), 'MMMM yyyy')
+  const isCurrentMonth = selectedMonth === currentMonth && selectedYear === currentYear
+
+  // Query for all available months with data
+  const { data: availableMonthsData } = await supabase
+    .from('sc_records')
+    .select('month, year')
+    .eq('verification_status', 'verified')
+    .order('year', { ascending: false })
+    .order('month', { ascending: false })
+
+  // Get unique month/year combinations
+  const uniqueMonths = availableMonthsData
+    ? Array.from(
+        new Map(
+          availableMonthsData.map(item => [
+            `${item.month}-${item.year}`,
+            {
+              month: item.month,
+              year: item.year,
+              label: format(new Date(item.year, item.month - 1), 'MMMM yyyy'),
+              isCurrent: item.month === currentMonth && item.year === currentYear,
+            },
+          ])
+        ).values()
+      )
+    : []
+
+  // Fetch leaderboard data for selected month
   const { data: leaderboardData, error } = await supabase
     .from('sc_records')
     .select(`
       *,
       hotels (*)
     `)
-    .eq('month', currentMonth)
-    .eq('year', currentYear)
+    .eq('month', selectedMonth)
+    .eq('year', selectedYear)
     .eq('verification_status', 'verified')
     .order('total_usd', { ascending: false })
 
@@ -117,7 +156,9 @@ export default async function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 animate-slide-up">
           <Card className="hover-lift border-2 shadow-lg">
             <CardHeader className="pb-3">
-              <CardDescription className="text-sm font-medium">🥇 Best Paying This Month</CardDescription>
+              <CardDescription className="text-sm font-medium">
+                🥇 Best Paying {isCurrentMonth ? 'This Month' : 'Hotel'}
+              </CardDescription>
               <CardTitle className="text-xl">
                 {stats.topPaying ? stats.topPaying.name : 'No data yet'}
               </CardTitle>
@@ -146,7 +187,7 @@ export default async function Home() {
           <Card className="hover-lift border-2 shadow-lg">
             <CardHeader className="pb-3">
               <CardDescription className="text-sm font-medium">🏨 Hotels Reporting</CardDescription>
-              <CardTitle className="text-xl">This Month</CardTitle>
+              <CardTitle className="text-xl">{isCurrentMonth ? 'This Month' : monthName}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
@@ -156,15 +197,22 @@ export default async function Home() {
           </Card>
         </div>
 
-        {/* Leaderboard Title */}
-        <div className="mb-8">
-          <h3 className="text-3xl font-bold mb-2 flex items-center gap-2">
-            <span className="text-2xl">📋</span>
-            {monthName} Service Charge Rankings
-          </h3>
-          <p className="text-muted-foreground text-lg">
-            Showing verified service charge payments for the current month
-          </p>
+        {/* Month Selector & Leaderboard Title */}
+        <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h3 className="text-3xl font-bold mb-2 flex items-center gap-2">
+              <span className="text-2xl">📋</span>
+              {monthName} Service Charge Rankings
+            </h3>
+            <p className="text-muted-foreground text-lg">
+              Showing verified service charge payments for {monthName}
+            </p>
+          </div>
+          <MonthSelector
+            availableMonths={uniqueMonths}
+            selectedMonth={selectedMonth}
+            selectedYear={selectedYear}
+          />
         </div>
 
         {/* Leaderboard Table with Search & Filters */}

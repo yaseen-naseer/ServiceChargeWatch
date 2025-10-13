@@ -10,7 +10,7 @@ import { SubmissionFilters } from '@/components/admin/submission-filters'
 export default async function AdminDashboardPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     page?: string
     per_page?: string
     hotel?: string
@@ -20,7 +20,7 @@ export default async function AdminDashboardPage({
     min_amount?: string
     max_amount?: string
     status?: string
-  }
+  }>
 }) {
   const supabase = await createClient()
 
@@ -42,20 +42,23 @@ export default async function AdminDashboardPage({
     redirect('/')
   }
 
+  // Await searchParams (Next.js 15)
+  const params = await searchParams
+
   // Pagination parameters
-  const page = Number(searchParams.page) || 1
-  const perPage = Number(searchParams.per_page) || 20
+  const page = Number(params.page) || 1
+  const perPage = Number(params.per_page) || 20
   const from = (page - 1) * perPage
   const to = from + perPage - 1
 
   // Filter parameters
-  const statusFilter = searchParams.status || 'pending'
-  const hotelFilter = searchParams.hotel
-  const atollFilter = searchParams.atoll
-  const monthFilter = searchParams.month ? Number(searchParams.month) : undefined
-  const yearFilter = searchParams.year ? Number(searchParams.year) : undefined
-  const minAmount = searchParams.min_amount ? Number(searchParams.min_amount) : undefined
-  const maxAmount = searchParams.max_amount ? Number(searchParams.max_amount) : undefined
+  const statusFilter = params.status || 'pending'
+  const hotelFilter = params.hotel
+  const atollFilter = params.atoll
+  const monthFilter = params.month ? Number(params.month) : undefined
+  const yearFilter = params.year ? Number(params.year) : undefined
+  const minAmount = params.min_amount ? Number(params.min_amount) : undefined
+  const maxAmount = params.max_amount ? Number(params.max_amount) : undefined
 
   // Build query with filters
   let query = supabase
