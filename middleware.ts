@@ -29,12 +29,11 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Get the session (use getSession in middleware, not getUser)
+  // IMPORTANT: Always use getUser() in middleware, not getSession()
+  // getUser() revalidates the auth token on every request
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  const user = session?.user
+    data: { user },
+  } = await supabase.auth.getUser()
 
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
