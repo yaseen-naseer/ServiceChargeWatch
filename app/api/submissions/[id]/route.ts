@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimit, RATE_LIMITS } from '@/lib/rate-limit'
 
 // PATCH - Update a pending submission
 export async function PATCH(
@@ -7,6 +8,12 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Apply rate limiting
+    const rateLimitResult = await rateLimit(request, RATE_LIMITS.API)
+    if (rateLimitResult) {
+      return rateLimitResult
+    }
+
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -73,6 +80,12 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Apply rate limiting
+    const rateLimitResult = await rateLimit(request, RATE_LIMITS.API)
+    if (rateLimitResult) {
+      return rateLimitResult
+    }
+
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 

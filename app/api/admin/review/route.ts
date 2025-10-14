@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendSubmissionApprovedEmail, sendSubmissionRejectedEmail } from '@/lib/email/send'
+import { rateLimit, RATE_LIMITS } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting - 60 requests per minute for admins
+    const rateLimitResult = await rateLimit(request, RATE_LIMITS.ADMIN)
+    if (rateLimitResult) {
+      return rateLimitResult
+    }
+
     const supabase = await createClient()
 
     // Check authentication

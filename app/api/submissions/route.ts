@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { rateLimit, RATE_LIMITS } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting - 10 submissions per hour
+    const rateLimitResult = await rateLimit(request, RATE_LIMITS.SUBMISSION)
+    if (rateLimitResult) {
+      return rateLimitResult
+    }
+
     const supabase = await createClient()
 
     // Check authentication

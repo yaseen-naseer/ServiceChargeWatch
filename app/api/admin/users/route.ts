@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { rateLimit, RATE_LIMITS } from '@/lib/rate-limit'
 
 // GET - List all admin users
 export async function GET() {
@@ -45,7 +46,13 @@ export async function GET() {
 }
 
 // POST - Add new admin user
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  // Apply rate limiting - 60 requests per minute for admins
+  const rateLimitResult = await rateLimit(request, RATE_LIMITS.ADMIN)
+  if (rateLimitResult) {
+    return rateLimitResult
+  }
+
   const supabase = await createClient()
 
   // Check authentication
@@ -137,7 +144,13 @@ export async function POST(request: Request) {
 }
 
 // DELETE - Remove admin user
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
+  // Apply rate limiting - 60 requests per minute for admins
+  const rateLimitResult = await rateLimit(request, RATE_LIMITS.ADMIN)
+  if (rateLimitResult) {
+    return rateLimitResult
+  }
+
   const supabase = await createClient()
 
   // Check authentication
