@@ -93,15 +93,10 @@ NEXT_PUBLIC_SENTRY_DSN
 
 **Value:**
 ```
-[Get from Sentry Dashboard after creating project]
+https://e897c04817a02793a7bea174723cda43@o4510188756533248.ingest.de.sentry.io/4510188778750032
 ```
 
-**How to get:**
-1. Go to https://sentry.io
-2. Create account or login
-3. Create new project → Select "Next.js"
-4. Copy the DSN value (looks like: `https://xxxx@xxxx.ingest.sentry.io/xxxx`)
-5. Paste here
+**Status:** ✅ **CONFIGURED**
 
 ---
 
@@ -136,7 +131,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 RESEND_API_KEY=re_ixTmUvq6_NDQeyquguRv4w6Q5ycKzyMpL
 RESEND_FROM_EMAIL=onboarding@resend.dev
 NEXT_PUBLIC_APP_URL=https://service-charge-watch.vercel.app
-NEXT_PUBLIC_SENTRY_DSN=[Your Sentry DSN from sentry.io]
+NEXT_PUBLIC_SENTRY_DSN=https://e897c04817a02793a7bea174723cda43@o4510188756533248.ingest.de.sentry.io/4510188778750032
 SENTRY_AUTH_TOKEN=[Your Sentry Auth Token - optional]
 ```
 
