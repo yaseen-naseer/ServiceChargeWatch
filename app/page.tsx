@@ -130,6 +130,16 @@ export default async function Home({ searchParams }: PageProps) {
                 <Link href="/admin/dashboard">Admin</Link>
               </Button>
             )}
+            {!user && (
+              <Button variant="ghost" asChild className="hover-lift">
+                <Link href="/auth/login">Login</Link>
+              </Button>
+            )}
+            {user && (
+              <Button variant="ghost" asChild className="hover-lift">
+                <Link href="/auth/logout">Logout</Link>
+              </Button>
+            )}
             <Button asChild className="gradient-primary text-white shadow-lg hover-lift border-0">
               <Link href="/submit">Submit SC Data</Link>
             </Button>

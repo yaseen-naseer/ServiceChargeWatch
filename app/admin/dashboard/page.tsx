@@ -145,6 +145,9 @@ export default async function AdminDashboardPage({
               <Link href="/">Home</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
+              <Link href="/submissions">My Submissions</Link>
+            </Button>
+            <Button variant="ghost" asChild className="hover-lift">
               <Link href="/admin/dashboard">Dashboard</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
