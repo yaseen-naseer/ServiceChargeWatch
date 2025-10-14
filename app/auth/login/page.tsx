@@ -35,9 +35,8 @@ function LoginForm() {
 
       if (error) throw error
 
-      // Refresh auth state first, then navigate
-      router.refresh()
-      // Use window.location for full page refresh to ensure cookies are set
+      // Small delay to ensure cookies are set, then redirect
+      await new Promise(resolve => setTimeout(resolve, 100))
       window.location.href = redirectTo
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to login')
