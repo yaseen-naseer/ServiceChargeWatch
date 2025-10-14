@@ -35,11 +35,12 @@ function LoginForm() {
 
       if (error) throw error
 
-      router.push(redirectTo)
+      // Refresh auth state first, then navigate
       router.refresh()
+      // Use window.location for full page refresh to ensure cookies are set
+      window.location.href = redirectTo
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to login')
-    } finally {
       setIsLoading(false)
     }
   }
