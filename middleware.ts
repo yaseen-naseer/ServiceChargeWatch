@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
           supabaseResponse = NextResponse.next({
@@ -29,46 +29,9 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // IMPORTANT: Always use getUser() in middleware, not getSession()
-  // getUser() revalidates the auth token on every request
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // Protect admin routes
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    if (!user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/auth/login'
-      url.searchParams.set('redirectTo', request.nextUrl.pathname)
-      return NextResponse.redirect(url)
-    }
-
-    // Check if user is admin
-    const { data: adminUser } = await supabase
-      .from('admin_users')
-      .select('*')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!adminUser) {
-      return NextResponse.redirect(new URL('/', request.url))
-    }
-  }
-
-  // Protect authenticated routes
-  if (
-    request.nextUrl.pathname.startsWith('/submit') ||
-    request.nextUrl.pathname.startsWith('/profile') ||
-    request.nextUrl.pathname.startsWith('/submissions')
-  ) {
-    if (!user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/auth/login'
-      url.searchParams.set('redirectTo', request.nextUrl.pathname)
-      return NextResponse.redirect(url)
-    }
-  }
+  // IMPORTANT: Refresh the auth session
+  // This ensures the auth token is refreshed and stored in cookies
+  await supabase.auth.getUser()
 
   return supabaseResponse
 }
