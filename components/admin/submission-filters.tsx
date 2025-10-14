@@ -120,12 +120,12 @@ export function SubmissionFilters({ hotels, atolls }: SubmissionFiltersProps) {
           {/* Hotel Filter */}
           <div className="space-y-2">
             <Label htmlFor="hotel">Hotel</Label>
-            <Select value={hotel} onValueChange={setHotel}>
+            <Select value={hotel || "all"} onValueChange={(val) => setHotel(val === "all" ? "" : val)}>
               <SelectTrigger id="hotel">
                 <SelectValue placeholder="All Hotels" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Hotels</SelectItem>
+                <SelectItem value="all">All Hotels</SelectItem>
                 {hotels.map((h) => (
                   <SelectItem key={h.id} value={h.id}>
                     {h.name}
@@ -138,12 +138,12 @@ export function SubmissionFilters({ hotels, atolls }: SubmissionFiltersProps) {
           {/* Atoll Filter */}
           <div className="space-y-2">
             <Label htmlFor="atoll">Atoll</Label>
-            <Select value={atoll} onValueChange={setAtoll}>
+            <Select value={atoll || "all"} onValueChange={(val) => setAtoll(val === "all" ? "" : val)}>
               <SelectTrigger id="atoll">
                 <SelectValue placeholder="All Atolls" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Atolls</SelectItem>
+                <SelectItem value="all">All Atolls</SelectItem>
                 {atolls.map((a) => (
                   <SelectItem key={a} value={a}>
                     {a}
@@ -156,12 +156,12 @@ export function SubmissionFilters({ hotels, atolls }: SubmissionFiltersProps) {
           {/* Month Filter */}
           <div className="space-y-2">
             <Label htmlFor="month">Month</Label>
-            <Select value={month} onValueChange={setMonth}>
+            <Select value={month || "all"} onValueChange={(val) => setMonth(val === "all" ? "" : val)}>
               <SelectTrigger id="month">
                 <SelectValue placeholder="All Months" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Months</SelectItem>
+                <SelectItem value="all">All Months</SelectItem>
                 {MONTHS.map((monthName, index) => (
                   <SelectItem key={index} value={(index + 1).toString()}>
                     {monthName}
@@ -174,12 +174,12 @@ export function SubmissionFilters({ hotels, atolls }: SubmissionFiltersProps) {
           {/* Year Filter */}
           <div className="space-y-2">
             <Label htmlFor="year">Year</Label>
-            <Select value={year} onValueChange={setYear}>
+            <Select value={year || "all"} onValueChange={(val) => setYear(val === "all" ? "" : val)}>
               <SelectTrigger id="year">
                 <SelectValue placeholder="All Years" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Years</SelectItem>
+                <SelectItem value="all">All Years</SelectItem>
                 {years.map((y) => (
                   <SelectItem key={y} value={y.toString()}>
                     {y}
