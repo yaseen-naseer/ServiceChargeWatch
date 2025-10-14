@@ -122,12 +122,12 @@ export default async function Home({ searchParams }: PageProps) {
             </Button>
             {user && (
               <Button variant="ghost" asChild className="hover-lift">
-                <Link href="/submissions">My Submissions</Link>
+                <Link href="/submissions" prefetch={false}>My Submissions</Link>
               </Button>
             )}
             {isAdmin && (
               <Button variant="ghost" asChild className="hover-lift">
-                <Link href="/admin/dashboard">Admin</Link>
+                <Link href="/admin/dashboard" prefetch={false}>Admin</Link>
               </Button>
             )}
             {!user && (
@@ -137,7 +137,7 @@ export default async function Home({ searchParams }: PageProps) {
             )}
             {user && (
               <Button variant="ghost" asChild className="hover-lift">
-                <Link href="/auth/logout">Logout</Link>
+                <Link href="/auth/logout" prefetch={false}>Logout</Link>
               </Button>
             )}
             <Button asChild className="gradient-primary text-white shadow-lg hover-lift border-0">

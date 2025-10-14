@@ -145,16 +145,16 @@ export default async function AdminDashboardPage({
               <Link href="/">Home</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
-              <Link href="/submissions">My Submissions</Link>
+              <Link href="/submissions" prefetch={false}>My Submissions</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
-              <Link href="/admin/dashboard">Dashboard</Link>
+              <Link href="/admin/dashboard" prefetch={false}>Dashboard</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
-              <Link href="/admin/users">Admins</Link>
+              <Link href="/admin/users" prefetch={false}>Admins</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
-              <Link href="/auth/logout">Logout</Link>
+              <Link href="/auth/logout" prefetch={false}>Logout</Link>
             </Button>
           </nav>
         </div>
