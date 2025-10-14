@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { TableSkeleton } from '@/components/ui/table-skeleton'
 
 export default function AdminDashboardLoading() {

@@ -85,6 +85,47 @@ https://service-charge-watch.vercel.app
 
 ---
 
+### 6. Sentry DSN (Error Monitoring)
+**Key:**
+```
+NEXT_PUBLIC_SENTRY_DSN
+```
+
+**Value:**
+```
+[Get from Sentry Dashboard after creating project]
+```
+
+**How to get:**
+1. Go to https://sentry.io
+2. Create account or login
+3. Create new project → Select "Next.js"
+4. Copy the DSN value (looks like: `https://xxxx@xxxx.ingest.sentry.io/xxxx`)
+5. Paste here
+
+---
+
+### 7. Sentry Auth Token (Build-time Source Maps)
+**Key:**
+```
+SENTRY_AUTH_TOKEN
+```
+
+**Value:**
+```
+[Get from Sentry Dashboard → Settings → Auth Tokens]
+```
+
+**How to get:**
+1. Go to Sentry → Settings → Auth Tokens
+2. Create new token with "project:releases" scope
+3. Copy the token
+4. Paste here
+
+**Note:** This is optional but recommended for better error stack traces.
+
+---
+
 ## Quick Copy-Paste Format
 
 If you prefer to paste all at once, here's the format for Vercel's bulk import:
@@ -95,6 +136,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 RESEND_API_KEY=re_ixTmUvq6_NDQeyquguRv4w6Q5ycKzyMpL
 RESEND_FROM_EMAIL=onboarding@resend.dev
 NEXT_PUBLIC_APP_URL=https://service-charge-watch.vercel.app
+NEXT_PUBLIC_SENTRY_DSN=[Your Sentry DSN from sentry.io]
+SENTRY_AUTH_TOKEN=[Your Sentry Auth Token - optional]
 ```
 
 ---

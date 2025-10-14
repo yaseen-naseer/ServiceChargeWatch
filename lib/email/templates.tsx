@@ -296,12 +296,10 @@ Empowering hospitality workers through transparency
 }
 
 interface WelcomeEmailProps {
-  userEmail: string
   confirmLink?: string
 }
 
 export function getWelcomeEmail({
-  userEmail,
   confirmLink,
 }: WelcomeEmailProps) {
   return {

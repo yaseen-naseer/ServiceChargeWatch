@@ -102,19 +102,6 @@ export function SubmissionHistory({ submissions, userEmail, hotels }: Submission
     }
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'verified':
-        return '✅'
-      case 'pending':
-        return '⏳'
-      case 'rejected':
-        return '❌'
-      default:
-        return '📝'
-    }
-  }
-
   const stats = {
     total: submissions.length,
     verified: submissions.filter(s => s.status === 'verified').length,
