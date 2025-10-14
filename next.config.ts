@@ -2,7 +2,55 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          // Content Security Policy
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://*.sentry.io",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob: https:",
+              "font-src 'self' data:",
+              "connect-src 'self' https://*.supabase.co https://*.sentry.io https://vercel.live https://va.vercel-scripts.com",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; '),
+          },
+          // Prevent browsers from incorrectly detecting non-scripts as scripts
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          // Prevent clickjacking attacks
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          // Enable browser XSS protection
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          // Control referrer information
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          // Permissions Policy (formerly Feature Policy)
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+          },
+        ],
+      },
+    ]
+  },
 };
 
 // Injected content via Sentry wizard below
