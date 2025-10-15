@@ -2,16 +2,16 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
-import { AdminUserManagement } from '@/components/admin/admin-user-management'
+import { HotelManagement } from '@/components/admin/hotel-management'
 
-export default async function AdminUsersPage() {
+export default async function AdminHotelsPage() {
   const supabase = await createClient()
 
   // Check if user is authenticated
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/auth/login?redirectTo=/admin/users')
+    redirect('/auth/login?redirectTo=/admin/hotels')
   }
 
   // Check if user is admin
@@ -25,12 +25,6 @@ export default async function AdminUsersPage() {
     redirect('/')
   }
 
-  // Fetch all admin users
-  const { data: adminUsers } = await supabase
-    .from('admin_users')
-    .select('*')
-    .order('created_at', { ascending: false })
-
   return (
     <div className="min-h-screen gradient-bg">
       {/* Header */}
@@ -42,7 +36,7 @@ export default async function AdminUsersPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Admin Users
+                Admin Dashboard
               </h1>
               <p className="text-xs text-muted-foreground">Service Charge Watch</p>
             </div>
@@ -74,22 +68,19 @@ export default async function AdminUsersPage() {
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8 animate-fade-in">
           <div className="inline-block mb-4 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
-            🔐 Admin Management
+            🔐 Admin Access
           </div>
           <h2 className="text-5xl font-bold mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-            User Management
+            Hotel Management
           </h2>
           <p className="text-muted-foreground text-lg">
-            Manage admin access and permissions
+            Manage hotels, resorts, and guesthouses in the Maldives
           </p>
         </div>
 
-        {/* Admin User Management */}
+        {/* Hotel Management Component */}
         <div className="animate-slide-up">
-          <AdminUserManagement
-            initialAdmins={adminUsers || []}
-            currentUserId={user.id}
-          />
+          <HotelManagement />
         </div>
       </main>
     </div>

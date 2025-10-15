@@ -151,6 +151,9 @@ export default async function AdminDashboardPage({
               <Link href="/admin/dashboard" prefetch={false}>Dashboard</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
+              <Link href="/admin/hotels" prefetch={false}>Hotels</Link>
+            </Button>
+            <Button variant="ghost" asChild className="hover-lift">
               <Link href="/admin/users" prefetch={false}>Admins</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
