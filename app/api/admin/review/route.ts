@@ -6,7 +6,7 @@ import { rateLimit, RATE_LIMITS } from '@/lib/rate-limit'
 export async function POST(request: NextRequest) {
   try {
     // Apply rate limiting - 60 requests per minute for admins
-    const rateLimitResult = await rateLimit(request, RATE_LIMITS.ADMIN)
+    const rateLimitResult = await rateLimit(request, RATE_LIMITS.ADMIN, undefined, 'admin')
     if (rateLimitResult) {
       return rateLimitResult
     }

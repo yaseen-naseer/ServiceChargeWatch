@@ -5,7 +5,7 @@ import { rateLimit, RATE_LIMITS } from '@/lib/rate-limit'
 export async function POST(request: NextRequest) {
   try {
     // Apply rate limiting - 10 submissions per hour
-    const rateLimitResult = await rateLimit(request, RATE_LIMITS.SUBMISSION)
+    const rateLimitResult = await rateLimit(request, RATE_LIMITS.SUBMISSION, undefined, 'submission')
     if (rateLimitResult) {
       return rateLimitResult
     }

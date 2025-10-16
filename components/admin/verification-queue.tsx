@@ -207,94 +207,99 @@ export function VerificationQueue({ submissions: initialSubmissions, currentPage
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50 hover:bg-muted/50">
-                <TableHead className="w-12">
-                  <Checkbox
-                    checked={selectedIds.size === submissions.length && submissions.length > 0}
-                    onCheckedChange={toggleSelectAll}
-                  />
-                </TableHead>
-                <TableHead className="font-bold">Hotel</TableHead>
-                <TableHead>Period</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Submitter</TableHead>
-                <TableHead>Position</TableHead>
-                <TableHead>Submitted</TableHead>
-                <TableHead>Proof</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {submissions.map((submission) => (
-                <TableRow key={submission.id} className="hover:bg-primary/5">
-                  <TableCell>
+          {/* Mobile: Horizontal scroll wrapper */}
+          <div className="overflow-x-auto -mx-px">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="w-12 sticky left-0 bg-muted/50 z-10">
                     <Checkbox
-                      checked={selectedIds.has(submission.id)}
-                      onCheckedChange={() => toggleSelection(submission.id)}
+                      checked={selectedIds.size === submissions.length && submissions.length > 0}
+                      onCheckedChange={toggleSelectAll}
                     />
-                  </TableCell>
-                  <TableCell className="font-medium">{submission.hotels.name}</TableCell>
-                  <TableCell>
-                    {MONTHS[submission.month - 1]} {submission.year}
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="font-mono text-sm">
-                        USD ${submission.usd_amount.toLocaleString()}
-                      </div>
-                      {submission.mvr_amount && (
-                        <div className="font-mono text-sm text-muted-foreground">
-                          MVR {submission.mvr_amount.toLocaleString()}
-                        </div>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-sm">{submission.submitter_email}</TableCell>
-                  <TableCell>{submission.position}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {format(new Date(submission.created_at), 'MMM d, yyyy')}
-                  </TableCell>
-                  <TableCell>
-                    {submission.proof_url ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        asChild
-                      >
-                        <a href={submission.proof_url} target="_blank" rel="noopener noreferrer">
-                          <Eye className="h-4 w-4" />
-                        </a>
-                      </Button>
-                    ) : (
-                      <span className="text-muted-foreground text-sm">No proof</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="default"
-                        onClick={() => openReviewDialog(submission, 'approve')}
-                      >
-                        <Check className="h-4 w-4 mr-1" />
-                        Approve
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => openReviewDialog(submission, 'reject')}
-                      >
-                        <X className="h-4 w-4 mr-1" />
-                        Reject
-                      </Button>
-                    </div>
-                  </TableCell>
+                  </TableHead>
+                  <TableHead className="font-bold min-w-[150px] sticky left-12 bg-muted/50 z-10">Hotel</TableHead>
+                  <TableHead className="min-w-[100px]">Period</TableHead>
+                  <TableHead className="min-w-[120px]">Amount</TableHead>
+                  <TableHead className="hidden md:table-cell">Submitter</TableHead>
+                  <TableHead className="hidden lg:table-cell">Position</TableHead>
+                  <TableHead className="hidden sm:table-cell">Submitted</TableHead>
+                  <TableHead className="hidden md:table-cell">Proof</TableHead>
+                  <TableHead className="min-w-[200px]">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {submissions.map((submission) => (
+                  <TableRow key={submission.id} className="hover:bg-primary/5">
+                    <TableCell className="sticky left-0 bg-background z-10">
+                      <Checkbox
+                        checked={selectedIds.has(submission.id)}
+                        onCheckedChange={() => toggleSelection(submission.id)}
+                      />
+                    </TableCell>
+                    <TableCell className="font-medium sticky left-12 bg-background z-10">{submission.hotels.name}</TableCell>
+                    <TableCell>
+                      {MONTHS[submission.month - 1]} {submission.year}
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="font-mono text-sm">
+                          USD ${submission.usd_amount.toLocaleString()}
+                        </div>
+                        {submission.mvr_amount && (
+                          <div className="font-mono text-sm text-muted-foreground">
+                            MVR {submission.mvr_amount.toLocaleString()}
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm hidden md:table-cell">{submission.submitter_email}</TableCell>
+                    <TableCell className="hidden lg:table-cell">{submission.position}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground hidden sm:table-cell">
+                      {format(new Date(submission.created_at), 'MMM d, yyyy')}
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {submission.proof_url ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          asChild
+                        >
+                          <a href={submission.proof_url} target="_blank" rel="noopener noreferrer">
+                            <Eye className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">No proof</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <Button
+                          size="sm"
+                          variant="default"
+                          onClick={() => openReviewDialog(submission, 'approve')}
+                          className="min-h-[44px]"
+                        >
+                          <Check className="h-4 w-4 sm:mr-1" />
+                          <span className="hidden sm:inline">Approve</span>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => openReviewDialog(submission, 'reject')}
+                          className="min-h-[44px]"
+                        >
+                          <X className="h-4 w-4 sm:mr-1" />
+                          <span className="hidden sm:inline">Reject</span>
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
 
           {/* Pagination */}
           {totalPages > 1 && (

@@ -118,6 +118,9 @@ export default async function Home({ searchParams }: PageProps) {
               <Link href="/">Home</Link>
             </Button>
             <Button variant="ghost" asChild className="hover-lift">
+              <Link href="/compare">Compare</Link>
+            </Button>
+            <Button variant="ghost" asChild className="hover-lift">
               <Link href="/about">About</Link>
             </Button>
             {user && (
