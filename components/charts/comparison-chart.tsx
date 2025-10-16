@@ -113,7 +113,7 @@ export function ComparisonChart({ data }: ComparisonChartProps) {
               tickFormatter={(value) => `$${value.toLocaleString()}`}
             />
             <Tooltip
-              formatter={(value: number | null) => {
+              formatter={(value: any) => {
                 if (value === null) return 'No data'
                 return `$${value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
               }}
