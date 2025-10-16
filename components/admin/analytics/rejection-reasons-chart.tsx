@@ -50,7 +50,7 @@ export function RejectionReasonsChart({ data }: RejectionReasonsChartProps) {
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
-                  data={data as Record<string, unknown>[]}
+                  data={data as unknown as Record<string, unknown>[]}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
