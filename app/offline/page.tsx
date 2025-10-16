@@ -1,12 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { WifiOff, RefreshCcw, Home } from 'lucide-react'
-
-export const metadata = {
-  title: 'Offline | Service Charge Watch',
-  description: 'You are currently offline',
-}
 
 export default function OfflinePage() {
   return (
