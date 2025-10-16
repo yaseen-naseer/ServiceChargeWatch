@@ -139,7 +139,7 @@ export function CompareContent() {
     })
 
     const data = await Promise.all(dataPromises)
-    setComparisonData(data.filter((d): d is HotelData => d !== null))
+    setComparisonData(data.filter(d => d !== null) as HotelData[])
     setLoading(false)
   }
 
